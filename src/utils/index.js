@@ -20,7 +20,7 @@ const initialiseCells = (gameMode) => {
   return cells;
 };
 
-const copyCells = (cells) => {
+export const copyCells = (cells) => {
   const numOfRows = cells.length;
   const numOfCols = cells[0].length;
 

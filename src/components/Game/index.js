@@ -1,10 +1,11 @@
 import React, { createContext, useState } from "react";
 import clsx from "clsx";
 import {
+  copyCells,
   generateCells,
   // findMines,
   popMines,
-  animateMines,
+  // animateMines,
   useTimer,
 } from "../../utils";
 import { GAME_MODES, GAME_STATES } from "../../utils/constants";
@@ -29,15 +30,34 @@ const Game = () => {
 
   const handleClick = (event) => (i, j) => {
     event.preventDefault();
-    if (event.nativeEvent.button === 0) {
-      handleLeftClick(i, j);
-    } else if (event.nativeEvent.button === 2) {
-      handleRightClick(i, j);
+    switch (event.nativeEvent.button) {
+      case 0:
+        handleLeftClick(i, j);
+        break;
+      case 1:
+        handleMiddleClick(i, j);
+        break;
+      case 2:
+        handleRightClick(i, j);
+        break;
+      default:
+      // do nothing
+    }
+  };
+
+  const handleGameState = (cells) => {
+    const numOfNotOpen = cells
+      .map((row) => row.filter((cell) => cell.state !== states.OPEN))
+      .reduce((prev, curr) => prev + curr.length, 0);
+
+    if (numOfNotOpen === gameMode.NUM_OF_MINES) {
+      pauseTime();
+      setGameState(GAME_STATES.WIN);
     }
   };
 
   const handleLeftClick = (i, j) => {
-    let currentCells = cells;
+    let currentCells = copyCells(cells);
 
     // idle --> live
     if (gameState === GAME_STATES.IDLE) {
@@ -64,16 +84,58 @@ const Game = () => {
 
     currentCells = openCell(currentCells, i, j);
 
-    const numOfNotOpen = currentCells
-      .map((row) => row.filter((cell) => cell.state !== states.OPEN))
-      .reduce((prev, curr) => prev + curr.length, 0);
+    handleGameState(currentCells);
 
-    if (numOfNotOpen === gameMode.NUM_OF_MINES) {
-      pauseTime();
-      setGameState(GAME_STATES.WIN);
+    setCells(currentCells);
+  };
+
+  const handleMiddleClick = (row, col) => {
+    let currentCells = copyCells(cells);
+
+    if (currentCells[row][col].state !== states.OPEN) {
+      return;
     }
 
-    setCells(openCell(currentCells, i, j));
+    const { value } = currentCells[row][col];
+
+    let numOfAdjacentFlags = 0;
+    const adjacentClosed = [];
+
+    for (let i = -1; i < 2; i++) {
+      for (let j = -1; j < 2; j++) {
+        const newRow = row + i;
+        const newCol = col + j;
+
+        const adjacentCell = currentCells?.[newRow]?.[newCol];
+
+        if (!adjacentCell) {
+          continue;
+        }
+
+        if (adjacentCell.state === states.FLAGGED) {
+          numOfAdjacentFlags++;
+        } else if (adjacentCell.state === states.CLOSED) {
+          adjacentClosed.push({ cell: adjacentCell, row: newRow, col: newCol });
+        }
+      }
+    }
+
+    if (value === numOfAdjacentFlags) {
+      adjacentClosed.forEach(({ cell, row, col }) => {
+        if (cell.isMine) {
+          pauseTime();
+          // animateMines(findMines(currentCells, i, j), currentCells, setCells);
+          currentCells = popMines(currentCells);
+          setGameOver(true);
+          setTimeout(() => setGameState(GAME_STATES.LOSE), 1000);
+        } else {
+          currentCells = openCell(currentCells, row, col);
+          handleGameState(currentCells);
+        }
+      });
+    }
+
+    setCells(currentCells);
   };
 
   const handleRightClick = (i, j) => {

@@ -48,6 +48,7 @@ const Cell = ({ isMine, state, value, row, col, onClick }) => {
       } ${styles[state]}`}
       onClick={(e) => onClick(e)(row, col)}
       onContextMenu={(e) => onClick(e)(row, col)}
+      onMouseDown={(e) => e.nativeEvent.button === 1 && onClick(e)(row, col)}
     >
       {renderContent()}
     </div>

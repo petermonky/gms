@@ -1,0 +1,113 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #4a752c;
+  height: 60px;
+
+  /* sections */
+  > div {
+    flex: 1;
+  }
+
+  .leftSection {
+    position: relative;
+
+    .dropDown {
+      cursor: pointer;
+      background-color: white;
+      font-family: Inter;
+      font-size: 16px;
+      font-weight: 500;
+      border: 0;
+      border-radius: 6px;
+      padding: 6px;
+      margin-left: 12px;
+      display: flex;
+      align-items: center;
+
+      /* caret icon */
+      svg {
+        margin-left: 4px;
+      }
+
+      &:focus + .dropDownMenu {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+      }
+    }
+
+    .dropDownMenu {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      z-index: 1;
+      left: 12px;
+      top: calc(100% + 4px);
+      font-family: Inter;
+      background-color: white;
+      padding: 8px 0;
+      border-radius: 6px;
+      box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-10px);
+      transition: opacity 75ms ease-in-out, transform 75ms ease-in-out;
+
+      .menuItem {
+        cursor: pointer;
+        padding: 4px 16px;
+
+        &:hover {
+          background-color: whitesmoke;
+        }
+      }
+    }
+  }
+
+  .middleSection {
+    flex-grow: 2;
+
+    .container {
+      display: flex;
+      margin: 0 auto;
+      width: fit-content;
+      column-gap: 16px;
+
+      .display {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .flagCount,
+        .timer {
+          font-variant-numeric: tabular-nums lining-nums;
+          font-family: Inter;
+          font-size: 24px;
+          color: white;
+          margin: 0;
+        }
+
+        .flagIcon {
+          color: white;
+          font-size: 24px;
+          margin-right: 6px;
+
+          path {
+            stroke: white;
+          }
+        }
+
+        .timerIcon {
+          color: white;
+          font-size: 32px;
+          margin-right: 4px;
+        }
+      }
+    }
+  }
+
+  // .rightSection {
+  // }
+}

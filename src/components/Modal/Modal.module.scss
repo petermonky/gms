@@ -1,0 +1,81 @@
+.modalContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 75ms ease-in-out;
+
+  &.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .modal {
+    display: flex;
+    flex-direction: column;
+    row-gap: 12px;
+
+    .image {
+      background: #4dc1f9
+        url("https://www.google.com/logos/fnbx/minesweeper/lose_screen.png")
+        center bottom no-repeat;
+      width: 300px;
+      height: 225px;
+      background-size: contain;
+      border-radius: 8px;
+
+      &.win {
+        background-image: url("https://www.google.com/logos/fnbx/minesweeper/win_screen.png");
+      }
+
+      .display {
+        margin-top: 30px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: white;
+
+        .timerIcon {
+          font-size: 54px;
+        }
+
+        .time {
+          font-size: 28px;
+          font-weight: 500;
+        }
+      }
+    }
+
+    .button {
+      cursor: pointer;
+      padding: 16px 0;
+      font-family: Inter;
+      font-size: 20px;
+      color: white;
+      background-color: #4a752c;
+      border: 0;
+      border-radius: 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: background-color 75ms ease-in;
+
+      &:hover {
+        background-color: #3b5e23;
+      }
+
+      .restartIcon {
+        color: white;
+        font-size: 30px;
+        margin-right: 16px;
+      }
+    }
+  }
+}

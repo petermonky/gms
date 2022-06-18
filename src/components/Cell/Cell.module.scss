@@ -1,0 +1,84 @@
+@mixin states($closedColour, $closedHoverColour, $openColour) {
+  &.closed,
+  &.flagged,
+  &.popped {
+    background-color: $closedColour;
+
+    &:hover {
+      background-color: $closedHoverColour;
+    }
+  }
+
+  &.open {
+    transition: background-color 0s ease-in-out;
+    background-color: $openColour;
+  }
+
+  .invisible {
+    transition: opacity 0 ease-in-out;
+    opacity: 0;
+  }
+}
+
+.cell {
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
+  font-family: Inter;
+  font-size: 28px;
+  font-weight: bold;
+  position: relative;
+  transition: background-color 0 ease-in-out;
+
+  > span {
+    position: absolute;
+    left: 0;
+    right: 0;
+  }
+
+  &.even-odd,
+  &.odd-even {
+    @include states(#a2d148, #b9dd77, #d7b899);
+  }
+
+  &.even-even,
+  &.odd-odd {
+    @include states(#aad750, #bfe17d, #e6c29f);
+  }
+
+  .flag {
+    color: #f23607;
+    font-size: 28px;
+    transition: opacity 40ms ease-in-out;
+
+    svg {
+      height: 40px;
+
+      path {
+        stroke: #f23607;
+      }
+    }
+  }
+
+  .mine {
+    font-size: 18px;
+    color: rgba(48, 0, 82, 0.7);
+    transition: opacity 40ms ease-in-out;
+
+    svg {
+      height: 40px;
+    }
+  }
+  transition: opacity 40ms ease-in-out;
+
+  $colors: blue, green, red, purple, maroon, turquoise, black, gray;
+
+  @for $i from 1 through 8 {
+    .value-#{$i} {
+      transition: opacity 40ms ease-in-out;
+      color: nth($colors, $i);
+      opacity: 0.5;
+    }
+  }
+}

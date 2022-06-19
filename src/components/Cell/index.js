@@ -1,11 +1,10 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import clsx from "clsx";
 import styles from "./Cell.module.scss";
 import { GameDataContext } from "../Game";
 
 import { GrFlagFill as FlagIcon } from "react-icons/gr";
 import { BsCircleFill as MineIcon } from "react-icons/bs";
-import { GAME_STATES } from "../../utils/constants";
 
 export const states = {
   OPEN: "open",
@@ -19,6 +18,8 @@ const evenOrOdd = (value) => {
 };
 
 const Cell = ({ isMine, state, value, row, col, onClick }) => {
+  const { gameMode } = useContext(GameDataContext);
+
   const renderContent = () => {
     const visibleClass = (targetState) => {
       return state !== targetState && styles.invisible;
@@ -43,9 +44,12 @@ const Cell = ({ isMine, state, value, row, col, onClick }) => {
 
   return (
     <div
-      className={`${styles.cell} ${
-        styles[`${evenOrOdd(row)}-${evenOrOdd(col)}`]
-      } ${styles[state]}`}
+      className={clsx(
+        styles.cell,
+        styles[`${evenOrOdd(row)}-${evenOrOdd(col)}`],
+        styles[state],
+        styles[`gamemode-${gameMode.NAME.toLowerCase()}`]
+      )}
       onClick={(e) => onClick(e)(row, col)}
       onContextMenu={(e) => onClick(e)(row, col)}
       onMouseDown={(e) => e.nativeEvent.button === 1 && onClick(e)(row, col)}

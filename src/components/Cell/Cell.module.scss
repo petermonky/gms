@@ -20,6 +20,27 @@
   }
 }
 
+@mixin sizes($cellSize, $fontSize, $flagSize, $mineSize) {
+  &.cell {
+    width: #{$cellSize};
+    height: #{$cellSize};
+    line-height: #{$cellSize};
+    font-size: #{$fontSize};
+
+    .flag {
+      font-size: #{$flagSize};
+    }
+
+    .mine {
+      font-size: #{$mineSize};
+    }
+
+    svg {
+      height: #{$cellSize};
+    }
+  }
+}
+
 .cell {
   width: 40px;
   height: 40px;
@@ -29,7 +50,7 @@
   font-size: 28px;
   font-weight: bold;
   position: relative;
-  transition: background-color 0 ease-in-out;
+  transition: background-color 0s ease-in-out;
 
   > span {
     position: absolute;
@@ -70,6 +91,7 @@
       height: 40px;
     }
   }
+
   transition: opacity 40ms ease-in-out;
 
   $colors: blue, green, red, purple, maroon, turquoise, black, gray;
@@ -81,4 +103,16 @@
       opacity: 0.5;
     }
   }
+}
+
+.gamemode-easy {
+  @include sizes(50px, 36px, 36px, 24px);
+}
+
+.gamemode-medium {
+  @include sizes(40px, 28px, 28px, 18px);
+}
+
+.gamemode-hard {
+  @include sizes(30px, 20px, 20px, 14px);
 }

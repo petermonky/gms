@@ -10,12 +10,12 @@
   }
 
   &.open {
-    transition: background-color 0s ease-in-out;
+    transition: background-color 0s ease-in-out, opacity 0s ease-in-out;
     background-color: $openColour;
   }
 
   .invisible {
-    transition: opacity 0 ease-in-out;
+    transition: opacity 0s ease-in-out;
     opacity: 0;
   }
 }
